@@ -2,7 +2,7 @@
 
 %Parametros de la simulacion
 ts = 0.0001;
-tmax = 3.5;
+tmax = 3;
 t = [0:ts:tmax];
 N = length(t);
 
@@ -12,7 +12,7 @@ Lm = 1*10^-3;	%H
 Bm = 1.5*10^-4;
 Rm = 5.2;
 Km = 0.035;
-Im_max = 3;
+Im_max = 2;
 
 %Parametros PWM
 f_pwm=3000; %freq in Hz
@@ -30,18 +30,18 @@ Kip = 0;
 Kdp = 2.12;
 
 %Trayectorias
-t_ref = [0,1,2,3,4,5,6];
+t_ref = [0,1,2,3,4,5,6] ./ 2;
 N_deg = 5;
 
 %Articulacion Q1
-q1_ref = [0,40,80,150,130,90,90];
+q1_ref = [0,20,45,70,60,80,100];
 [q1p,q1v,q1a] = pathPlanner(t_ref,q1_ref,N_deg,t);
 F_load_q1 = 0; %N
 Kt_q1 = 10; %Relacion fuerza lineal / torque de actuador 
 Kv_q1 = 0.005; %Relacion Velocidad de la articulacion / velocidad angular del actuador
 
 %Articulacion Q2
-q2_ref = [0,30,45,70,80,90,90];
+q2_ref = [0,5,8,13,10,15,18];
 [q2p,q2v,q2a] = pathPlanner(t_ref,q2_ref,N_deg,t);
 F_load_q2 = 0; %N
 Kt_q2 = 10; 
