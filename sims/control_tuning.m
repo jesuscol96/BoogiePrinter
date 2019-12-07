@@ -4,17 +4,17 @@ clear;
 close all;
 
 %Parametros de la simulacion
-ts = 0.00001;
-tmax = 2;
+ts = 0.0001;
+tmax = 1.5;
 t = [0:ts:tmax];
 N = length(t);
 
 %Parametros del motor
-Jm = 3.125^-7;	
-Lm = 1*10^-3;	%H
-Bm = 1.5*10^-4;
-Rm = 5.2;
-Km = 0.035;
+Jm = 3.2*10^-6;
+Lm = 3;	%H
+Bm = 1.34*10^-4;
+Rm = 10.86;
+Km = 0.036;
 
 %Tranfer Function
 s = tf('s');
@@ -44,6 +44,14 @@ Gap = (Gcp*Gm)/s; %posicion
 Gsv = Gav / (1+ Gav);
 Gsp = Gap / (1+ Gap);
 
+%Motor step
+figure();
+step(24*Gm,t);
+title('Motor step')
+ylabel('Velocidad angular');
+xlabel('Tiempo (s)');
+
+%{
 %LGR
 Kmax = 15;
 Krlocus = [0:0.0001:10];
@@ -54,5 +62,6 @@ rlocus(Gap,Krlocus);
 x = step(Gsp,t);
 figure()
 plot(t,x);
+%}
 
 
