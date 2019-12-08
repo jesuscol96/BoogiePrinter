@@ -5,15 +5,15 @@ close all;
 
 %Parametros de la simulacion
 ts = 0.0001;
-tmax = 1.5;
+tmax = 0.3;
 t = [0:ts:tmax];
 N = length(t);
 
 %Parametros del motor
 Jm = 3.2*10^-6;
-Lm = 3;	%H
+Lm = 0.01;	%H
 Bm = 1.34*10^-4;
-Rm = 10.86;
+Rm = 10.9;
 Km = 0.036;
 
 %Tranfer Function
@@ -25,16 +25,17 @@ G_motor_den = [Jm*Lm (Bm*Lm + Rm*Jm) (Rm*Bm+Km^2)];
 Gm = tf(G_motor_num,G_motor_den);
 
 %Controlador de velocidad
-Kpv = 18;
-Kiv = 180;
-Kdv = 0.4;
+Kpv = 0.157;
+Kiv = 7.85;
+Kdv = 0;
 Gcv = Kpv + Kiv/s + Kdv*s;
 
 %Controlador de posicion
-Kpp = 21.2;
+Kpp = 7.85;
 Kip = 0;
-Kdp = 2.12;
+Kdp = 0.157;
 Gcp = Kpp + Kip/s + Kdp*s;
+
 
 %Lazo abierto
 Gav = Gcv*Gm; %velocidad
@@ -44,24 +45,41 @@ Gap = (Gcp*Gm)/s; %posicion
 Gsv = Gav / (1+ Gav);
 Gsp = Gap / (1+ Gap);
 
+
 %Motor step
 figure();
-step(24*Gm,t);
-title('Motor step')
-ylabel('Velocidad angular');
-xlabel('Tiempo (s)');
+step(Gm,t);
+title('Respuesta del motor para un escalon de un 1 voltio')
+ylabel('Velocidad angular (rad/s)');
+xlabel('Tiempo');
+grid()
 
 %{
-%LGR
-Kmax = 15;
-Krlocus = [0:0.0001:10];
-figure();
-rlocus(Gap,Krlocus);
-
 %Step
-x = step(Gsp,t);
+x = step(100*Gsv,t);
 figure()
 plot(t,x);
-%}
+title('Respuesta al escalon del motor controlado en velocidad')
+ylabel('Velocidad angular (rad/s)');
+xlabel('Tiempo');
+grid()
 
+
+%Step
+x = step(100*Gsp,t);
+figure()
+plot(t,x);
+title('Respuesta al escalon del motor controlado en posicion')
+ylabel('Posicion (rad)');
+xlabel('Tiempo (s)');
+grid()
+
+
+%LGR
+Kmax = 15;
+Krlocus = [0:0.001:10];
+figure();
+rlocus(Gap);
+
+%}
 
