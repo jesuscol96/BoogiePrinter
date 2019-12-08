@@ -1,0 +1,9 @@
+Conversor DC-DC
+NCP3064
+
+Flip-flop
+SN74LVC1G175
+
+Conversor F/V
+LM2907
+
